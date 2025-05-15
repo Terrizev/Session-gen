@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pair Code</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* Keep all original styles unchanged */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(to bottom, green, yellow);
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box {
+      width: 300px;
+      height: 320px;
+      padding: 20px;
+      position: relative;
+      text-align: center;
+      background-color: white;
+      border-radius: 10px;
+      transform: perspective(1000px) rotateY(0deg);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+      position: relative;
+    }
+
+    /* ... keep all other CSS styles exactly as before ... */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="main">
+      <div class="box" id="box">
+        <div id="text">
+          <i class="fa fa-user"></i>
+          <p>
+            <h3 class="centered-text">NTEEJ MD PAIRING</h3>
+            <br>
+            <h6>powered by NTEEJ TECH</h6>
+            <h6>Enter Your Number with Country Code.</h6>
+            <div class="input-container">
+              <input placeholder="256784670936" type="number" id="number" placeholder="Enter your Phone Number with Country Code" name="">
+              <button id="submit">Submit</button>
+            </div>
+            
+            <a id="waiting-message" class="centered-text" style="display: none;">Please wait a while</a>
+            <br>
+            <br>
+            <main id="pair"></main>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      a.innerHTML = ''; // Clear previous messages
+      
+      if (!c.value) {
+        a.innerHTML = '<a style="color:white;font-weight:bold">Enter your WhatsApp number with Country Code</a><br><br>';
+        return;
+      }
+
+      const phoneNumber = c.value.replace(/[^0-9]/g, "");
+      if (phoneNumber.length < 11) {
+        a.innerHTML = '<a style="color:red;font-weight:bold">Invalid Number</a><br><br>';
+        return;
+      }
+
+      try {
+        a.innerHTML = '<a style="color:white;font-weight:bold">Generating credentials...</a><br><br>';
+        
+        const response = await axios({
+          method: 'get',
+          url: `/code?number=${phoneNumber}`,
+          responseType: 'blob'
+        });
+
+        // Create download link
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'creds.json');
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        a.innerHTML = `
+          <div style="text-align:center;">
+            <p style="color:green;font-weight:bold">Credentials generated successfully!</p>
+            <p style="color:white;font-size:12px">File download should start automatically</p>
+          </div>
+        `;
+
+      } catch (error) {
+        console.error('Error:', error);
+        a.innerHTML = `
+          <div style="text-align:center;">
+            <p style="color:red;font-weight:bold">Error generating credentials</p>
+            <p style="color:white;font-size:12px">${error.response?.data || 'Check console for details'}</p>
+          </div>
+        `;
+      }
+    });
+  </script>
+</body>
+</html>

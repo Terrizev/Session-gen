@@ -1,0 +1,41 @@
+{
+    "name": "Anonymous Credentials Generator",
+    "description": "WhatsApp Credentials Generator by Terrivez",
+    "logo": "",
+    "repository": "https://github.com/Giftedmaurice/giftedmdV2-session-generator",
+    "keywords": ["WhatsApp", "Baileys", "Nteej"],
+    "success_url": "/",
+    "buildpacks": [
+        { 
+            "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" 
+        }
+    ],
+    "env": {      
+      "PORT": {
+        "description": "Port for web app (4000,5000,3000... any)",
+        "value": "5000",
+        "required": false 
+      },
+      "NODE_ENV": {
+        "description": "Node environment configuration",
+        "value": "production",
+        "required": true
+      },
+      "DISABLE_LOGGING": {
+        "description": "Disable verbose logging",
+        "value": "true",
+        "required": false
+      }
+    },
+    "formation": {
+        "web": {
+            "quantity": 1,
+            "size": "free"
+        }
+    },
+    "addons": [
+        {
+            "plan": "heroku-redis:hobby-dev"
+        }
+    ]
+}
