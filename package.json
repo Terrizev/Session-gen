@@ -1,9 +1,9 @@
 {
     "description": "nteejsession",
     "main": "./itxxwasi.js",
-    "engines": { 
-        "npm" : ">=9.7.2",
-        "node" : ">=20.0.0"
+    "engines": {
+        "node": "<=20.11.1",
+        "npm": ">=9.7.2"
     },
     "scripts": {
         "start": "node itxxwasi.js",
