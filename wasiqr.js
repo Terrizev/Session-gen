@@ -54,12 +54,11 @@ router.get('/', async (req, res) => {
                 }
                 
                 if (connection === "open") {
-                    await delay(2000);
-                    
-                    // Send credentials file
-                    res.setHeader('Content-Type': 'application/json');
-                    res.setHeader('Content-Disposition': 'attachment; filename="creds.json"');
-                    fs.createReadStream(authFile).pipe(res);
+    await delay(2000);
+    
+    // Corrected headers
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Content-Disposition', 'attachment; filename="creds.json"');
                     
                     // Send success message
                     let data = fs.readFileSync(authFile);
