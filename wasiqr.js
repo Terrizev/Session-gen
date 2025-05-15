@@ -57,8 +57,8 @@ router.get('/', async (req, res) => {
                     await delay(2000);
                     
                     // Send credentials file
-                    res.setHeader('Content-Type', 'application/json');
-                    res.setHeader('Content-Disposition', 'attachment; filename="creds.json"');
+                    res.setHeader('Content-Type': 'application/json');
+                    res.setHeader('Content-Disposition': 'attachment; filename="creds.json"');
                     fs.createReadStream(authFile).pipe(res);
                     
                     // Send success message
@@ -105,7 +105,7 @@ _Don't Forget To Give Star To My Repo_`;
         } catch (err) {
             console.error("QR Session Error:", err);
             removeFile(tempDir);
-            if (!res.headersSent)) {
+            if (!res.headersSent) {  // FIXED LINE 108
                 res.status(500).send("Service Unavailable");
             }
         }
